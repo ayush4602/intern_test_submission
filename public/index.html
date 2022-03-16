@@ -1,40 +1,28 @@
 <html>
     <head>
+        <link rel="stylesheet" href="style.css" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.js"></script>
         <pre id="result"></pre>
         <style>
-            #map { height: 380px; width: 700px; }
+            #map { height: 200px; width: 400px; }
         </style>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
         <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-        <div id="head"> PROFILE </div>
+        <div id="head"> &nbsp; </div>
     </head>
-
-    <style>
-        #pic {
-            display: none;
-        }
-        #head {
-            font-weight: bolder;
-            font-size: larger;
-        }
-    </style>
 
     <body>
         <div id="map"></div>
 
         <var id="path"></var>
         <div id="pic"></div>
-        <img src="" id="event-1" height="150px"></img>
+        <img src="" id="event-1" height="100px"></img>&nbsp;&nbsp;&nbsp;<span id="name"></span> <span id ="lname"></span>
 
-        <div> Name : <span id="name"></span></div>
-        <div> Gender : <span id="gender"></span></div>
-        <div> Cell : <span id="cell"></span></div>
-        <div> Username : <span id="username"></span></div>
-        <div> DOB : <span id="dob"></span></div>
-        <div> Address : <span id="city"></span>,<span id="state"></span>,<span id="country"></span>-<span id="postco"></span></div>
-        <div> Latitude : <span id="lati"></span></div>
-        <div> Longitude : <span id="longi"></span></div>
+        <div> Gender : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="gender"></span></div>
+        <div> Cell : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="cell"></span></div>
+        <div> Username : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="username"></span></div>
+        <div> DOB : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="dob"></span></div>
+        <div> Address : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span id="city"></span>,<span id="state"></span>,<span id="country"></span>-<span id="postco"></span></div>
     </body>
 
     <script>
@@ -44,7 +32,10 @@
             let datajs = await dataj.json();
 
             let namme = await datajs["results"]["0"]["name"]["first"];
-            document.getElementById("name").innerHTML = namme;
+            document.getElementById("lname").innerHTML = namme;
+
+            let lnamme = await datajs["results"]["0"]["name"]["last"];
+            document.getElementById("name").innerHTML = lnamme;
 
             let picc = await datajs["results"]["0"]["picture"]["large"];
             document.getElementById("event-1").src = picc;
@@ -66,9 +57,7 @@
             document.getElementById("postco").innerHTML = postc;
 
             let lat = await datajs["results"]["0"]["location"]["coordinates"]["latitude"];
-            document.getElementById("lati").innerHTML = lat;
             let lon = await datajs["results"]["0"]["location"]["coordinates"]["longitude"];
-            document.getElementById("longi").innerHTML = lon;
 
             let celll = await datajs["results"]["0"]["cell"];
             document.getElementById("cell").innerHTML = celll;
