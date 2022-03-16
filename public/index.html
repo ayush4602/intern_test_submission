@@ -1,0 +1,109 @@
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.js"></script>
+        <pre id="result"></pre>
+        <style>
+            #map { height: 380px; width: 700px; }
+        </style>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <div id="head"> PROFILE </div>
+    </head>
+
+    <style>
+        #pic {
+            display: none;
+        }
+        #head {
+            font-weight: bolder;
+            font-size: larger;
+        }
+    </style>
+
+    <body>
+        <div id="map"></div>
+
+        <var id="path"></var>
+        <div id="pic"></div>
+        <img src="" id="event-1" height="150px"></img>
+
+        <div> Name : <span id="name"></span></div>
+        <div> Gender : <span id="gender"></span></div>
+        <div> Cell : <span id="cell"></span></div>
+        <div> Username : <span id="username"></span></div>
+        <div> DOB : <span id="dob"></span></div>
+        <div> Address : <span id="city"></span>,<span id="state"></span>,<span id="country"></span>-<span id="postco"></span></div>
+        <div> Latitude : <span id="lati"></span></div>
+        <div> Longitude : <span id="longi"></span></div>
+    </body>
+
+    <script>
+
+        window.onload = async function data() {
+            let dataj = await fetch('https://randomuser.me/api/');
+            let datajs = await dataj.json();
+
+            let namme = await datajs["results"]["0"]["name"]["first"];
+            document.getElementById("name").innerHTML = namme;
+
+            let picc = await datajs["results"]["0"]["picture"]["large"];
+            document.getElementById("event-1").src = picc;
+            // console.log(picc);
+
+            let genderr = await datajs["results"]["0"]["gender"];
+            document.getElementById("gender").innerHTML = genderr;
+
+            let usern = await datajs["results"]["0"]["login"]["username"];
+            document.getElementById("username").innerHTML = usern;
+
+            let cityy = await datajs["results"]["0"]["location"]["city"];
+            document.getElementById("city").innerHTML = cityy;
+            let statee = await datajs["results"]["0"]["location"]["state"];
+            document.getElementById("state").innerHTML = statee;
+            let countryy = await datajs["results"]["0"]["location"]["country"];
+            document.getElementById("country").innerHTML = countryy;
+            let postc = await datajs["results"]["0"]["location"]["postcode"];
+            document.getElementById("postco").innerHTML = postc;
+
+            let lat = await datajs["results"]["0"]["location"]["coordinates"]["latitude"];
+            document.getElementById("lati").innerHTML = lat;
+            let lon = await datajs["results"]["0"]["location"]["coordinates"]["longitude"];
+            document.getElementById("longi").innerHTML = lon;
+
+            let celll = await datajs["results"]["0"]["cell"];
+            document.getElementById("cell").innerHTML = celll;
+
+
+            var map = L.map('map').setView([lat, lon], 2.5);
+    
+            L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=D7hs03lLXHXvXt6ASI0F', {
+                attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+                maxZoom: 18,
+                minZoom: 2.5,
+            }).addTo(map);
+
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
+                .openPopup();
+    
+            var popup = L.popup();
+    
+            function onMapClick(e) {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(map);
+            }
+    
+            map.on('click', onMapClick);
+            // moment(tristrdob).format("DD MMM YYYY");
+
+            let dobb = await datajs["results"]["0"]["dob"]["date"];
+            var strdob = dobb;
+            var tristrdob = strdob.substring(0,10);
+            // console.log(tristrdob);
+            let tristring = moment(tristrdob, 'YYYY-MM-DD').format("DD MMM YYYY");
+            document.getElementById("dob").innerHTML = tristring;
+        }
+    </script>
+</html>
